@@ -1,0 +1,17 @@
+{%extends 'Base.html'%} {%block title%}Login{%endblock%} {%block content%}
+
+<div class="row login-container">
+  <div class="login col-10 col-md-8 col-lg-6">
+    <form method="post" class="login-form">
+      <label for="email" class="label-email">Email</label>
+      <input type="email" name="email" class="form-control" />
+      <label for="password" class="label-password">Password</label>
+      <input type="password" name="password" class="form-control" />
+      <a href="{{url_for('auth.register')}}"
+        >Don't have an account ? Register</a
+      >
+      <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </form>
+  </div>
+</div>
+{%endblock%}
