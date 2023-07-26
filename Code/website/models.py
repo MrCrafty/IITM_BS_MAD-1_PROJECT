@@ -8,16 +8,17 @@ class User(db.Model, UserMixin):
     firstName = db.Column(db.String(100))
     lastName = db.Column(db.String(150))
     password = db.Column(db.String(150))
+    role = db.Column(db.String(100))
 
 
 class Category(db.Model):
     categoryId = db.Column(db.Integer(), primary_key=True)
-    categoryName = db.Column(db.String(100), relation)
+    categoryName = db.Column(db.String(100))
 
 
 class Product(db.Model):
     productId = db.Column(db.Integer(), primary_key=True)
     productName = db.Column(db.String(100))
     unit = db.Column(db.String(50))
-    rate = db.Column(db.Integer(100))
-    quantity = db.Column(db.Integer(100))
+    rate = db.Column(db.Integer())
+    quantity = db.Column(db.Integer())

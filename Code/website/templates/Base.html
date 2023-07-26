@@ -20,7 +20,26 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
   </head>
   <body>
-    <header></header>
+    <header class="fw-bold fs-6">
+      <div class="container d-flex flex-row justify-content-between">
+        <div>
+          <a href="/">Home</a>
+          <a href="#">
+            Username
+          </a>
+        </div>
+        <div class="manager-logout-list d-flex flex-row">
+          <ul class="d-flex flex-row">
+            <li><a href="#">Summary</a></li>
+            <li><a href="#">Logout</a></li>
+          </ul>
+          <ul class="login-list d-flex flex-row">
+            <li><a href="{{url_for('auth.login')}}">Login</a></li>
+            <li><a href="{{url_for('auth.register')}}">Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
     
       {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
       {%if category=="error"%}

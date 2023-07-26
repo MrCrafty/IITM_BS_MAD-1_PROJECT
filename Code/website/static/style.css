@@ -1,21 +1,29 @@
-.login-container{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+html {
+  margin: 0;
+  padding: 0;
 }
-.login{
-    border-radius: 50px;
-    background-color: #d6d6d6;
-    /* height: 70%; */
-    /* width: 50%; */
-    padding: 20% 10%;
+
+li {
+  list-style: none;
 }
-.login-form{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
 }
-.login-submit{
-    margin-top: 25px;
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.manager-logout-list li {
+  margin-right: 1rem;
 }
