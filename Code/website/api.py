@@ -1,10 +1,12 @@
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, redirect, request
 from . import db
 from .models import Product, User, Category
 
 api = Blueprint('api', __name__)
 
+
+# api for getting all the users
 
 @api.route('/getUsers')
 def getUsers():
@@ -15,14 +17,11 @@ def getUsers():
     return jsonify(arr)
 
 
-@api.route('/getCategories', methods=["GET", "POST", "DELETE", "PUT"])
+# api for getting all the categories
+
+
+@api.route('/getCategories', methods=["GET"])
 def getCategories():
-    if (request.method == "POST"):
-        data = request.get_json()
-        category = Category(categoryName=data["name"])
-        db.session.add(category)
-        db.session.commit()
-        return "Category Successfully added"
     arr = []
     categories = Category.query.all()
     for category in categories:
@@ -30,9 +29,40 @@ def getCategories():
         item["id"] = category.categoryId
         item["name"] = category.categoryName
         arr.append(item)
+    return jsonify(arr)
 
-    print(arr)
-    return "ok"
+
+# api for creating a category
+
+
+@api.route('/createCategory', methods=["POST"])
+def createCategory():
+    if (request.method == "POST"):
+        data = request.get_json()
+        categories = list(Category.query.filter_by(categoryName=data["name"]))
+        if (len(categories) > 0):
+            return "Category already exists", 500
+        category = Category(categoryName=data["name"])
+        db.session.add(category)
+        db.session.commit()
+        return "Category Successfully created", 201
+
+# api for deleting a category
+
+
+@api.route('deleteCategory', methods=["DELETE"])
+def deleteCategory():
+    if (request.method == "DELETE"):
+        data = request.get_json()
+        categories = list(Category.query.filter_by(categoryName=data["name"]))
+        if (len(categories) == 0):
+            return "Category does not exist", 500
+        res = Category.query.filter_by(
+            categoryName=data["name"])[0]
+        db.session.delete(res)
+        db.session.commit()
+        print(res)
+        return "Category successfully deleted", 200
 
 
 @api.route('/getProducts', methods=["GET", "POST", "DELETE", "PUT"])
