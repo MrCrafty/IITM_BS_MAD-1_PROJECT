@@ -1,0 +1,20 @@
+{%extends 'Base.html'%} {%block title%}Products{%endblock%} {%block content%}
+
+<div class="container">
+  {%for product in products%}
+  <div
+    class="d-flex flex-row align-items-center justify-content-between col-5 mx-auto"
+  >
+    <h2>{{product.productName}}</h2>
+    <h3>{{product.productId}}</h3>
+    <h4>${{product.rate}}</h4>
+    <h4>{{product.categoryId}}</h4>
+    <div class="d-flex flex-row">
+      <button class="btn btn-danger me-2">Delete</button>
+      <button class="btn btn-warning">Edit</button>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+
+{%endblock%}

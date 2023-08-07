@@ -1,0 +1,27 @@
+{%extends 'Base.html'%} {%block title%}Add Category{%endblock%} {%block
+content%}
+
+<div class="container">
+  <div class="w-50 mx-auto border border-2 px-3 py-2 rounded-2">
+    <form
+      action="http://localhost:5000/api/createCategory"
+      method="POST"
+      class="d-flex flex-column"
+    >
+      <label for="name" class="mb-2 fs-2 text-center">Category Name</label>
+      <input
+        type="text"
+        name="name"
+        class="mb-4 p-3 fs-5"
+        placeholder="Enter category name"
+      />
+      <input
+        type="submit"
+        value="SUBMIT"
+        class="w-25 mx-auto btn btn-primary"
+      />
+    </form>
+  </div>
+</div>
+
+{%endblock%}
