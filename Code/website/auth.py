@@ -21,11 +21,15 @@ def login():
                 if check_password_hash(user[0].password, password):
                     login_user(user[0])
                     flash('Login Successful', category='success')
+                    redirect("/")
                 else:
                     flash("Password is incorrect", category="danger")
         else:
             flash('Email is not registered !', category="danger")
-    return render_template('Login.html')
+    if (current_user.is_authenticated):
+        return redirect("/")
+    else:
+        return render_template('Login.html', user=current_user)
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -46,16 +50,15 @@ def register():
                 flash("Password is very short", category="error")
             else:
                 new_user = User(email=email,
-                                password=generate_password_hash(password))
+                                password=generate_password_hash(password), role="user")
             db.session.add(new_user)
             db.session.commit()
             flash("Account Successfully created !!", category="success")
-            redirect(url_for('views.Home'))
+            return redirect("/login")
     return render_template('Register.html')
 
 
 @auth.route('/logout')
-@login_required
 def logout():
     if (current_user):
         logout_user()

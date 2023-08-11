@@ -22,21 +22,26 @@
   <body>
     <header class="fw-bold fs-6">
       <div class="container d-flex flex-row justify-content-between">
+        {%if current_user.is_authenticated%}
         <div>
           <a href="/">Home</a>
           <a href="#">
-            Username
+            Hello, {{current_user["email"]}} !!
           </a>
         </div>
+        {%endif%}
         <div class="manager-logout-list d-flex flex-row">
+          {%if current_user.is_authenticated%}
           <ul class="d-flex flex-row">
-            <li><a href="#">Summary</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="#">Cart</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
+          {%else%}
           <ul class="login-list d-flex flex-row">
             <li><a href="{{url_for('auth.login')}}">Login</a></li>
             <li><a href="{{url_for('auth.register')}}">Register</a></li>
           </ul>
+          {%endif%}
         </div>
       </div>
     </header>

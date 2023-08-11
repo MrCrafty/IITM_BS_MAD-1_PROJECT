@@ -1,24 +1,35 @@
 {%extends 'Base.html'%} {%block title%}Categories{%endblock%} {%block content%}
+<a
+  href="/addcategory"
+  class="add_category_btn btn px-5 py-2 btn-primary position-fixed rounded-5"
+  >+</a
+>
 
 <div class="container">
   {%for category in categories%}
-  <div
-    class="d-flex flex-row align-items-center justify-content-between col-5 mx-auto"
-  >
-    <h2>{{category.categoryName}}</h2>
-    <h4>{{category.categoryId}}</h4>
-    <ul>
-      {%for product in category.products%}
-      <li>{{product.productName}}</li>
-      <li>{{product.unit}}</li>
-      <li>{{product.rate}}</li>
-      <li>{{product.quantity}}</li>
+  <div class="row mt-5">
+    <div class="d-flex flex-column">
+      <h2>{{category.categoryName}}</h2>
+      <h6>{{category.categoryId}}</h6>
+      <h6>Products</h6>
+      <div class="d-flex">
+        {%for product in category.products%}
+        <div class="border border-primary p-3 me-3 my-3">
+          <li class="fs-4">Product: {{product.productName}}</li>
+          <li>Rate: {{product.rate}}{{product.unit}}</li>
 
-      {%endfor%}
-    </ul>
-    <div class="d-flex flex-row">
-      <button class="btn btn-danger me-2">Delete</button>
-      <button class="btn btn-warning">Edit</button>
+          <li>Quantity: {{product.quantity}}</li>
+        </div>
+        {%endfor%}
+      </div>
+      <div class="d-flex flex-row">
+        <a
+          href="/api/deleteCategory?id={{category.categoryId}}"
+          class="btn btn-danger me-2"
+          >Delete</a
+        >
+        <a class="btn btn-warning">Edit</a>
+      </div>
     </div>
   </div>
   {%endfor%}

@@ -1,5 +1,18 @@
 {%extends 'Base.html'%} {%block title%}Login{%endblock%} {%block content%}
 
-<div class="container">Home Page</div>
-
-{%endblock%}
+<div class="container">
+  {%if current_user.is_authenticated%} {%for category in categories%}
+  <h2>{{category.categoryName}}</h2>
+  <ul class="d-grid gap-3">
+    {%for product in category.products%}
+    <li>{{product.productName}}</li>
+    {%endfor%}
+  </ul>
+  {%endfor%} {%else%}
+  <h1>Welcome to E-Grocery Store</h1>
+  <h3 class="mt-5">
+    <a href="/login" class="text-bg-primary px-3 py-1 rounded-5">Log-in</a> to
+    continue
+  </h3>
+</div>
+{%endif%} {%endblock%}

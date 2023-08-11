@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
+from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 
@@ -30,6 +31,11 @@ def create_app():
     from .api import api
     app.register_blueprint(api, url_prefix="/api")
     create_database(app)
+    with app.app_context():
+        new_user = User(email="admin@store.com",
+                        password=generate_password_hash("adminmanager"), role="manager")
+        db.session.add(new_user)
+        db.session.commit()
     return app
 
 
