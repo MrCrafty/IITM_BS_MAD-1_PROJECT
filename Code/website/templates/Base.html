@@ -33,7 +33,9 @@
         <div class="manager-logout-list d-flex flex-row">
           {%if current_user.is_authenticated%}
           <ul class="d-flex flex-row">
+            {%if current_user.role == "user"%}
             <li><a href="#">Cart</a></li>
+            {%endif%}
             <li><a href="/logout">Logout</a></li>
           </ul>
           {%else%}

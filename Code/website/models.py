@@ -7,7 +7,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), nullable=False)
     password = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(100))
-    # cart = db.Column()
+    cart = db.Column(db.String(200))
 
 
 class Category(db.Model):

@@ -1,7 +1,9 @@
 
-from flask import Blueprint, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask_login import current_user
 from . import db
 from .models import Product, User, Category
+import json
 
 api = Blueprint('api', __name__)
 
@@ -48,7 +50,7 @@ def createCategory():
         category = Category(categoryName=data["name"])
         db.session.add(category)
         db.session.commit()
-        return redirect("/categories")
+        return redirect("/")
 # api for deleting a category
 
 
@@ -69,7 +71,7 @@ def deleteCategory():
         db.session.delete(products)
         db.session.commit()
 
-    return redirect("/categories")
+    return redirect("/")
 
 # endregion
 
@@ -89,37 +91,58 @@ def getProducts():
     return jsonify(arr)
 
 
-# api for creating a category
+# api for creating a product
 
 
 @api.route('/createProduct', methods=["POST"])
 def createProduct():
-    data = request.get_json()
-    categoryId = request.args.get("id", type=int)
-    categoryCount = Category.query.all()
-    for cat in categoryCount:
-        if (cat.categoryId != categoryId):
-            return "Category invalid, Please select valid category", 400
+    if (request.method == "POST"):
+        data = request.form
+        product = Product(productName=data["name"], unit=data["unit"],
+                          rate=data["rate"], quantity=data['quantity'], categoryId=data["category"])
+        db.session.add(product)
+        db.session.commit()
+        return redirect("/")
 
-    product = Product(productName=data["name"], unit=data["unit"],
-                      rate=data["rate"], quantity=data['quantity'], categoryId=categoryId)
-    db.session.add(product)
-    db.session.commit()
-    return "Product Successfully created", 201
-
-# api for deleting a category
+# api for deleting a product
 
 
-@api.route('deleteProduct', methods=["DELETE"])
+@api.route('deleteProduct', methods=["GET"])
 def deleteProduct():
-    data = request.get_json()
-    products = list(Product.query.filter_by(productId=data["id"]))
+    data = request.args.get("id", type=int)
+    products = list(Product.query.filter_by(productId=data))
     if (len(products) == 0):
         return "Product does not exists", 500
     res = products[0]
     db.session.delete(res)
     db.session.commit()
-    print(res)
-    return "Product Successfully deleted", 200
+
+    return redirect("/")
 
 # endregion
+
+
+@api.route('/addToCart', methods=["GET"])
+def AddToCart():
+    productId = request.args.get('id', type=int)
+    quantity = request.args.get('quantity', type=int) or 1
+    TotalProducts = Product.query.all()
+    IsProduct = False
+    for pro in TotalProducts:
+        if (pro.productId == productId):
+            IsProduct = True
+    if (not IsProduct):
+        return "Please enter a valid product Id"
+    user = current_user
+    if (user.is_authenticated and user.role == 'user'):
+        user_cart = json.loads((user.cart).replace("\'", "\""))
+        if (str(productId) in user_cart.keys()):
+            user_cart[str(productId)] += quantity
+        else:
+            user_cart[str(productId)] = quantity
+        user.cart = str(user_cart)
+        db.session.commit()
+        flash("Added to Cart Successfully", category="success")
+        return redirect("/products")
+    else:
+        return "User not authenticated"

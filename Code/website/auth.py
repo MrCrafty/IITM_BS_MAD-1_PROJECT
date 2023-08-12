@@ -20,12 +20,12 @@ def login():
             else:
                 if check_password_hash(user[0].password, password):
                     login_user(user[0])
-                    flash('Login Successful', category='success')
+                    flash('Login Successful', category='message')
                     redirect("/")
                 else:
-                    flash("Password is incorrect", category="danger")
+                    flash("Password is incorrect", category="error")
         else:
-            flash('Email is not registered !', category="danger")
+            flash('Email is not registered !', category="error")
     if (current_user.is_authenticated):
         return redirect("/")
     else:
@@ -50,7 +50,7 @@ def register():
                 flash("Password is very short", category="error")
             else:
                 new_user = User(email=email,
-                                password=generate_password_hash(password), role="user")
+                                password=generate_password_hash(password), role="user", cart=str({}))
             db.session.add(new_user)
             db.session.commit()
             flash("Account Successfully created !!", category="success")

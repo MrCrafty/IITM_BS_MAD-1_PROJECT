@@ -8,15 +8,12 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def Home():
-    categories = Category.query.all()
-    return render_template('Home.html', categories=categories)
-
-
-@views.route('/categories')
-@login_required
-def Categories():
-    categories = Category.query.all()
-    return render_template('Categories.html', categories=categories)
+    if (current_user.is_authenticated and current_user.role == "manager"):
+        categories = Category.query.all()
+        return render_template('Categories.html', categories=categories)
+    else:
+        categories = Category.query.all()
+        return render_template("Home.html", categories=categories)
 
 
 @views.route('/products')
@@ -31,5 +28,23 @@ def Products():
 def AddCategory():
     if (current_user.role == "manager"):
         return render_template('AddCategory.html')
+    else:
+        return redirect("/")
+
+
+@views.route('/cart')
+@login_required
+def Cart():
+    cart = current_user.cart
+    products = Product.query.all()
+
+    return render_template('cart.html', cart=cart)
+
+
+@views.route("/addproduct")
+def AddProduct():
+    if (current_user.role == "manager"):
+        categories = Category.query.all()
+        return render_template('AddProduct.html', categories=categories)
     else:
         return redirect("/")

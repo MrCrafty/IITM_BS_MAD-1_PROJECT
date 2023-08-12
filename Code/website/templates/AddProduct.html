@@ -1,0 +1,52 @@
+{%extends 'Base.html'%} {%block title%}Add Category{%endblock%} {%block
+content%}
+
+<div class="container">
+  <div class="w-50 mx-auto border border-2 px-3 py-2 rounded-2">
+    <form
+      action="http://localhost:5000/api/createProduct"
+      method="POST"
+      class="d-flex flex-column"
+    >
+      <label for="name" class="mb-2 fs-4">Product Name</label>
+      <input
+        type="text"
+        name="name"
+        class="mb-4 p-3 fs-5"
+        placeholder="Enter product name"
+      />
+      <label for="rate" class="mb-2 fs-4">Product Rate</label>
+      <input
+        type="number"
+        name="rate"
+        class="mb-4 p-3 fs-5"
+        placeholder="Enter rate"
+        min="1"
+      />
+      <label for="unit" class="mb-2 fs-4">Rate Unit</label>
+      <select name="unit" class="p-3 fs-5">
+        <option value="$/kg" selected>₹/kg</option>
+        <option value="$/kg">$/kg</option>
+      </select>
+      <label for="quantity" class="mb-2 fs-4">Product Quantity</label>
+      <input
+        type="number"
+        name="quantity"
+        class="mb-4 p-3 fs-5"
+        placeholder="Enter Quantity"
+        min="1"
+      />
+      <label for="category" class="mb-2 fs-4">Product Category</label>
+      <select name="category" class="mb-2 p-3 fs-5">
+        {%for category in categories%}
+        <option value="{{category.categoryId}}">
+          {{category.categoryName}}
+        </option>
+        {%endfor%}
+      </select>
+      <input type="submit" value="Add" class="w-25 mx-auto btn btn-primary" />
+    </form>
+  </div>
+</div>
+
+{%endblock%}

@@ -32,10 +32,12 @@ def create_app():
     app.register_blueprint(api, url_prefix="/api")
     create_database(app)
     with app.app_context():
-        new_user = User(email="admin@store.com",
-                        password=generate_password_hash("adminmanager"), role="manager")
-        db.session.add(new_user)
-        db.session.commit()
+        manager = User.query.filter_by(email="admin@store.com").all()
+        if (manager == []):
+            new_user = User(email="admin@store.com",
+                            password=generate_password_hash("adminmanager"), role="manager")
+            db.session.add(new_user)
+            db.session.commit()
     return app
 
 

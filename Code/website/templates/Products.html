@@ -12,6 +12,11 @@
     <div class="d-flex flex-row">
       <button class="btn btn-danger me-2">Delete</button>
       <button class="btn btn-warning">Edit</button>
+      <a
+        href="/api/addToCart?id={{product.productId}}&quantity=5"
+        class="btn btn-outline-primary ms-2"
+        >Add To Cart</a
+      >
     </div>
   </div>
   {%endfor%}
