@@ -1,0 +1,21 @@
+{%extends 'Base.html'%} {%block title%}Add To Cart{%endblock%} {%block content%}
+<form
+  action="/api/addToCart?id={{product.productId}}"
+  class="w-25 mx-auto p-4 border border-secondary"
+  method="POST"
+>
+  <h2 class="text-dark">{{product.productName}}</h2>
+  <h4 class="text-secondary">Rate: {{product.rate}}{{product.unit}}</h4>
+  <div class="d-flex flex-column">
+    <label for="quantity" class="mb-2 fs-3">Quantity</label>
+    <input
+      type="number"
+      name="quantity"
+      class="mb-4 p-3 fs-5"
+      placeholder="Enter quantity"
+      min="1"
+    />
+    <input type="submit" value="Add To Cart" class="btn btn-primary" />
+  </div>
+</form>
+{%endblock%}

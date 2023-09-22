@@ -6,7 +6,9 @@
 >
 
 <div class="row">
-  {%for category in categories %}
+  {%if categories == []%}
+  <h2 class="text-danger">No categories to show. Please add some categories</h2>
+  {%endif%} {%for category in categories %}
   <div class="border border-dark p-3 my-2">
     <h2>Category: {{category.categoryName}}</h2>
     <div class="d-flex flex-column">
@@ -19,7 +21,7 @@
             <h4>Product: {{product.productName}}</h4>
             <ul class="p-0 mb-0">
               <li>Quantity: {{product.quantity}}</li>
-              <li>Rate: {{product.quantity}}{{product.unit}}</li>
+              <li>Rate: {{product.rate}}{{product.unit}}</li>
             </ul>
           </div>
           <div class="d-flex flex-column justify-content-between">
@@ -28,15 +30,22 @@
               class="btn btn-danger"
               >Delete Product</a
             >
-            <a href="" class="btn btn-warning">Edit Product</a>
+            <a
+              href="/editproduct?id={{product.productId}}"
+              class="btn btn-warning"
+              >Edit Product</a
+            >
           </div>
         </div>
       </div>
       {%endfor%}
+      <a href="/addproduct" class="btn btn-primary align-self-center"
+        >Add Product</a
+      >
     </div>
     <div>
       <a
-        href="/deleteCategory?id={{category.categoryId}}"
+        href="/api/deleteCategory?id={{category.categoryId}}"
         class="btn btn-danger"
         >Delete Category</a
       >

@@ -1,0 +1,29 @@
+{%extends 'Base.html'%} {%block title%}Cart{%endblock%} {%block content%}
+
+<div class="container">
+  <div>
+    {%if not cart%}
+    <h2>Nothing in Cart. Contiue shopping.</h2>
+    {%endif%} {%for product in products%}{%if product.productId | string in
+    cart.keys()%}
+    <div class="border border-2 border-dark p-5 m-5">
+      <h3>Product: {{product.productName}}</h3>
+      <h5>Quantity: {{cart[product.productId | string]}}</h5>
+      <h5>Rate: {{product.rate}}{{product.unit}}</h5>
+      <h5>
+        Cost: {%if product.unit == "$/kg"%}${%else%}₹{%endif%} {{product.rate *
+        cart[product.productId | string]}}
+      </h5>
+      <a
+        href="/api/deleteFromCart?id={{product.productId}}"
+        class="btn btn-outline-danger"
+        >Remove from Cart</a
+      >
+    </div>
+    {%endif%} {%endfor%}
+  </div>
+  {%if cart%}
+  <h2>Total: ₹{{total}}</h2>
+  {%endif%}
+</div>
+{%endblock%}

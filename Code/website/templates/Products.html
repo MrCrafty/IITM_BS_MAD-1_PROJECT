@@ -9,6 +9,11 @@
     <h3>{{product.productId}}</h3>
     <h4>${{product.rate}}</h4>
     <h4>{{product.categoryId}}</h4>
+
+    <h4>
+      {%if category.categoryId == product.categoryId%}
+      {{category.categoryName}}{%endif%}
+    </h4>
     <div class="d-flex flex-row">
       <button class="btn btn-danger me-2">Delete</button>
       <button class="btn btn-warning">Edit</button>

@@ -1,14 +1,21 @@
-{%extends 'Base.html'%} {%block title%}Add Product{%endblock%} {%block content%}
+{%extends 'Base.html'%} {%block title%}Update Product{%endblock%} {%block
+content%}
 
 <div class="container">
   <div class="w-50 mx-auto border border-2 px-3 py-2 rounded-2">
-    <form action="/api/createProduct" method="POST" class="d-flex flex-column">
+    <form
+      action="http://localhost:5000/api/editproduct?id={{product.productId}}"
+      method="POST"
+      class="d-flex flex-column"
+    >
       <label for="name" class="mb-2 fs-4">Product Name</label>
       <input
         type="text"
         name="name"
         class="mb-4 p-3 fs-5"
         placeholder="Enter product name"
+        value="{{product.productName}}"
+        required
       />
       <label for="rate" class="mb-2 fs-4">Product Rate</label>
       <input
@@ -17,11 +24,13 @@
         class="mb-4 p-3 fs-5"
         placeholder="Enter rate"
         min="1"
+        value="{{product.rate}}"
+        required
       />
       <label for="unit" class="mb-2 fs-4">Rate Unit</label>
-      <select name="unit" class="p-3 fs-5">
-        <option value="₹/kg" selected>₹/kg</option>
-        <option value="$/kg">$/kg</option>
+      <select name="unit" class="p-3 fs-5" required value="{{product.unit}}">
+        <option value="₹/kg" {%if product.unit == "₹/kg" %}selected{%endif%}>₹/kg</option>
+        <option value="$/kg" {%if product.unit == "$/kg" %}selected{%endif%}>$/kg</option>
       </select>
       <label for="quantity" class="mb-2 fs-4">Product Quantity</label>
       <input
@@ -30,16 +39,23 @@
         class="mb-4 p-3 fs-5"
         placeholder="Enter Quantity"
         min="1"
+        value="{{product.quantity}}"
+        required
       />
       <label for="category" class="mb-2 fs-4">Product Category</label>
-      <select name="category" class="mb-2 p-3 fs-5">
+      <select
+        value="{{product.categoryId}}"
+        name="category"
+        class="mb-2 p-3 fs-5"
+        disabled
+      >
         {%for category in categories%}
-        <option value="{{category.categoryId}}">
+        <option value="{{category.categoryId}}" {%if category.categoryId == product.productId %}selected{%endif%}>
           {{category.categoryName}}
         </option>
         {%endfor%}
       </select>
-      <input type="submit" value="Add" class="w-25 mx-auto btn btn-primary" />
+      <input type="submit" value="Save" class="w-25 mx-auto btn btn-primary" />
     </form>
   </div>
 </div>

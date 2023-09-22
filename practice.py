@@ -1,14 +1,7 @@
 import json
+dict = {1: "1", 2: "2"}
 
-dictStr = str({"1": 10, "2": 50, "12": 100}).replace("\'", "\"")
-dict = json.loads(dictStr)
-
-productId = 2
-
-if (str(productId) in dict.keys()):
-    print("Yes")
+if (4 in dict.keys()):
+    print("yes")
 else:
-    print('no')
-
-
-print(json.loads(dict)["1"])
+    print("no")

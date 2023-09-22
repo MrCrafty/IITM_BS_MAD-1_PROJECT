@@ -1,13 +1,24 @@
-{%extends 'Base.html'%} {%block title%}Login{%endblock%} {%block content%}
+{%extends 'Base.html'%} {%block title%}Home{%endblock%} {%block content%}
 
 <div class="container">
   {%if current_user.is_authenticated%} {%for category in categories%}
-  <h2>{{category.categoryName}}</h2>
-  <ul class="d-grid gap-3">
-    {%for product in category.products%}
-    <li>{{product.productName}}</li>
-    {%endfor%}
-  </ul>
+  <div class="mb-5">
+    <h2>{{category.categoryName}}</h2>
+    <hr />
+    <div class="d-flex gap-5">
+      {%for product in category.products%}
+      <div class="border border-2 border-dark p-0 m-0 py-3 px-5">
+        <ul class="p-0">
+          <li><h3>{{product.productName}}</h3></li>
+          <li>{{product.rate}}{{product.unit}}</li>
+        </ul>
+        <a class="btn btn-primary" href="/addtocart?id={{product.productId}}"
+          >Add to Cart</a
+        >
+      </div>
+      {%endfor%}
+    </div>
+  </div>
   {%endfor%} {%else%}
   <h1>Welcome to E-Grocery Store</h1>
   <h3 class="mt-5">

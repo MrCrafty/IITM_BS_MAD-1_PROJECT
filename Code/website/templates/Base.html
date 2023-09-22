@@ -20,26 +20,24 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
   </head>
   <body>
-    <header class="fw-bold fs-6">
-      <div class="container d-flex flex-row justify-content-between">
+    <header class="fw-bold fs-5 border-bottom border-2 mb-3">
+      <div class="container my-0 d-flex flex-row justify-content-between align-items-center">
         {%if current_user.is_authenticated%}
         <div>
           <a href="/">Home</a>
-          <a href="#">
-            Hello, {{current_user["email"]}} !!
-          </a>
+         
         </div>
         {%endif%}
         <div class="manager-logout-list d-flex flex-row">
           {%if current_user.is_authenticated%}
-          <ul class="d-flex flex-row">
+          <ul class="d-flex flex-row my-2">
             {%if current_user.role == "user"%}
-            <li><a href="#">Cart</a></li>
+            <li><a href="/cart">Cart</a></li>
             {%endif%}
             <li><a href="/logout">Logout</a></li>
           </ul>
           {%else%}
-          <ul class="login-list d-flex flex-row">
+          <ul class="login-list d-flex flex-row my-2">
             <li><a href="{{url_for('auth.login')}}">Login</a></li>
             <li><a href="{{url_for('auth.register')}}">Register</a></li>
           </ul>

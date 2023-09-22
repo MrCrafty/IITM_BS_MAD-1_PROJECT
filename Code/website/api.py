@@ -8,17 +8,6 @@ import json
 api = Blueprint('api', __name__)
 
 
-# api for getting all the users
-
-@api.route('/getUsers')
-def getUsers():
-    arr = []
-    users = User.query.all()
-    for user in users:
-        arr.append(user.email)
-    return jsonify(arr)
-
-
 # region Category APIs
 
 
@@ -59,6 +48,9 @@ def deleteCategory():
     data = request.args.get("id")
     if (data is None):
         return "Please enter category id in URL"
+    products = Product.query.filter_by(categoryId=data).all()
+    for product in products:
+        db.session.delete(product)
     categories = list(Category.query.filter_by(categoryId=data))
     if (len(categories) == 0):
         return "Category does not exist", 500
@@ -66,15 +58,22 @@ def deleteCategory():
     db.session.delete(res)
     db.session.commit()
     db.session.close()
-    products = list(Product.query.filter_by(categoryId=data))
-    if (len(products) > 0):
-        db.session.delete(products)
-        db.session.commit()
 
     return redirect("/")
 
-# endregion
 
+@api.route('/editproduct', methods=['GET', 'POST'])
+def UpdateProduct():
+    productId = request.args.get('id', type=int)
+    data = request.form
+    product = Product.query.filter_by(productId=productId).first()
+    product.productName = data["name"]
+    product.rate = data["rate"]
+    product.unit = data["unit"]
+    product.quantity = data["quantity"]
+    db.session.commit()
+    return redirect('/')
+# endregion
 # region Product APIs
 
 
@@ -122,10 +121,10 @@ def deleteProduct():
 # endregion
 
 
-@api.route('/addToCart', methods=["GET"])
+@api.route('/addToCart', methods=["GET", "POST"])
 def AddToCart():
     productId = request.args.get('id', type=int)
-    quantity = request.args.get('quantity', type=int) or 1
+    quantity = request.form["quantity"]
     TotalProducts = Product.query.all()
     IsProduct = False
     for pro in TotalProducts:
@@ -137,12 +136,27 @@ def AddToCart():
     if (user.is_authenticated and user.role == 'user'):
         user_cart = json.loads((user.cart).replace("\'", "\""))
         if (str(productId) in user_cart.keys()):
-            user_cart[str(productId)] += quantity
+            user_cart[str(productId)] += int(quantity)
         else:
             user_cart[str(productId)] = quantity
         user.cart = str(user_cart)
         db.session.commit()
         flash("Added to Cart Successfully", category="success")
-        return redirect("/products")
+        return redirect("/")
+    else:
+        return "User not authenticated"
+
+
+@api.route("/deleteFromCart", methods=["GET", "POST"])
+def DeleteFromCart():
+    productId = request.args.get('id', type=int)
+    user = current_user
+    if (user.is_authenticated and user.role == "user"):
+        user_cart = json.loads((user.cart).replace("\'", "\""))
+        del user_cart[str(productId)]
+        user.cart = str(user_cart)
+        db.session.commit()
+        flash("Product deleted from Cart", category="success")
+        return redirect("/cart")
     else:
         return "User not authenticated"
