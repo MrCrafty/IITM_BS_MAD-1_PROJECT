@@ -17,11 +17,25 @@ api = Blueprint('api', __name__)
 @api.route('/getCategories', methods=["GET"])
 def getCategories():
     arr = []
-    categories = Category.query.all()
-    for category in categories:
+    for category in Category.query.all():
         item = {}
         item["id"] = category.categoryId
         item["name"] = category.categoryName
+
+        arr.append(item)
+    return jsonify(arr)
+
+
+@api.route("/getProducts", methods=["GET"])
+def getProducts():
+    arr = []
+    for product in Product.query.all():
+        item = {}
+        item["id"] = product.productId
+        item["name"] = product.productName
+        item["unit"] = product.unit
+        item["quantity"] = product.quantity
+        item["rate"] = product.rate
         arr.append(item)
     return jsonify(arr)
 
@@ -77,19 +91,6 @@ def UpdateProduct():
 # region Product APIs
 
 
-@api.route('/getProducts', methods=["GET"])
-def getProducts():
-    arr = []
-    products = Product.query.all()
-    for product in products:
-        item = {}
-        item["id"] = product.productId
-        item["name"] = product.productName
-        item["category"] = product.categoryId
-        arr.append(item)
-    return jsonify(arr)
-
-
 # api for creating a product
 
 
@@ -127,11 +128,7 @@ def deleteProduct():
 def AddToCart():
     productId = request.args.get('id', type=int)
     quantity = request.form["quantity"]
-    TotalProducts = Product.query.all()
-    IsProduct = False
-    for pro in TotalProducts:
-        if (pro.productId == productId):
-            IsProduct = True
+    IsProduct = Product.query.filter_by(productId=productId)
     if (not IsProduct):
         return "Please enter a valid product Id"
     user = current_user
