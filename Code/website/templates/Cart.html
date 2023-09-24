@@ -23,7 +23,10 @@
     {%endif%} {%endfor%}
   </div>
   {%if cart%}
-  <h2>Total: ₹{{total}}</h2>
+  <div class="d-flex justify-content-between">
+    <h2>Total: ₹{{total}}</h2>
+    <a href="/api/checkout" class="btn btn-primary">Checkout&rarr;</a>
+  </div>
   {%endif%}
 </div>
 {%endblock%}

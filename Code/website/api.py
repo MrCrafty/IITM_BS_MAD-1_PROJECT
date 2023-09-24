@@ -1,5 +1,5 @@
 
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, flash, jsonify, redirect, request, url_for
 from flask_login import current_user
 from . import db
 from .models import Product, User, Category
@@ -120,6 +120,8 @@ def deleteProduct():
 
 # endregion
 
+# region Cart APIs
+
 
 @api.route('/addToCart', methods=["GET", "POST"])
 def AddToCart():
@@ -160,9 +162,27 @@ def DeleteFromCart():
         return redirect("/cart")
     else:
         return "User not authenticated"
+# endregion
 
 
 @api.route("/search", methods=["POST"])
 def search():
     search_query = request.form["query"]
     return redirect('/search?query='+search_query)
+
+
+@api.route("/checkout")
+def checkout():
+    user = current_user
+    if (user.is_authenticated and user.role == "user"):
+        user_cart = json.loads((user.cart).replace("\'", "\""))
+        products = Product.query.all()
+        for product in products:
+            if str(product.productId) in user_cart.keys():
+                product.quantity -= int(user_cart[str(product.productId)])
+        user.cart = str({})
+        db.session.commit()
+        flash("Purchase successful", category="success")
+        return redirect("/")
+    else:
+        return "User not authenticated"
