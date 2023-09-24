@@ -1,0 +1,37 @@
+{%extends 'Base.html'%} {%block title%}Search{%endblock%} {%block content%}
+<h1 class="text-danger">Categories</h1>
+<hr />
+{%for category in categories%} {%if query in category.categoryName | lower%}
+<h2>{{category.categoryName}}</h2>
+<div class="d-flex flex-row gap-3">
+  {%for product in category.products%}
+  <div class="border border-2 border-dark p-0 m-0 py-3 px-5">
+    <ul class="p-0">
+      <li><h3>{{product.productName}}</h3></li>
+      <li>{{product.rate}}{{product.unit}}</li>
+    </ul>
+    <a class="btn btn-primary" href="/addtocart?id={{product.productId}}"
+      >Add to Cart</a
+    >
+  </div>
+  {%endfor%}
+</div>
+
+{%endif%} {%endfor%}
+<hr />
+<h1 class="text-danger">Products</h1>
+<div class="d-flex flex-row gap-3">
+  {%for product in products %} {%if query in product.productName%}
+  <div class="border border-2 border-dark p-0 m-0 py-3 px-5">
+    <ul class="p-0">
+      <li><h3>{{product.productName}}</h3></li>
+      <li>{{product.rate}}{{product.unit}}</li>
+    </ul>
+    <a class="btn btn-primary" href="/addtocart?id={{product.productId}}"
+      >Add to Cart</a
+    >
+  </div>
+
+  {%endif%} {%endfor%}
+</div>
+{%endblock%}

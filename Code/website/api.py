@@ -138,7 +138,7 @@ def AddToCart():
         if (str(productId) in user_cart.keys()):
             user_cart[str(productId)] += int(quantity)
         else:
-            user_cart[str(productId)] = quantity
+            user_cart[str(productId)] = int(quantity)
         user.cart = str(user_cart)
         db.session.commit()
         flash("Added to Cart Successfully", category="success")
@@ -160,3 +160,9 @@ def DeleteFromCart():
         return redirect("/cart")
     else:
         return "User not authenticated"
+
+
+@api.route("/search", methods=["POST"])
+def search():
+    search_query = request.form["query"]
+    return redirect('/search?query='+search_query)

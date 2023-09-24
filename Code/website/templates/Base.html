@@ -25,9 +25,18 @@
         {%if current_user.is_authenticated%}
         <div>
           <a href="/">Home</a>
-         
         </div>
+        {%if current_user.role == "user"%}
+
+        <div>
+          <form action="/api/search" method="POST" style="position: relative;">
+          <input type="text" name="query" placeholder="Search"/>
+          <input type="submit" value="&#x1F50D;">
+        </form>
+      </div>
         {%endif%}
+        {%endif%}
+        
         <div class="manager-logout-list d-flex flex-row">
           {%if current_user.is_authenticated%}
           <ul class="d-flex flex-row my-2">
@@ -63,8 +72,7 @@
     >
         {{ message }}
 
-        <button type="button" class="close" data-bs-dismiss="alert">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert">
         </button>
       </div>{%endif%}
       {% endfor %} {% endif %} {% endwith %}

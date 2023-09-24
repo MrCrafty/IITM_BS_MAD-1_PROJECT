@@ -44,9 +44,9 @@ def Cart():
     for pro in products:
         if str(pro.productId) in cart.keys():
             if (pro.unit == "$/kg"):
-                total += (cart[str(pro.productId)] * int(pro.rate) * 80)
+                total += (int(cart[str(pro.productId)]) * int(pro.rate) * 80)
             else:
-                total += (cart[str(pro.productId)] * int(pro.rate))
+                total += (int(cart[str(pro.productId)]) * int(pro.rate))
     return render_template('cart.html', cart=cart, products=products, total=total)
 
 
@@ -73,3 +73,11 @@ def AddToCart():
     product = Product.query.filter_by(productId=productId).first()
     print(product)
     return render_template("AddToCart.html", product=product)
+
+
+@views.route("/search")
+def Search():
+    query = request.args.get("query")
+    Products = Product.query.all()
+    Categories = Category.query.all()
+    return render_template("Search.html", products=Products, categories=Categories, query=query)

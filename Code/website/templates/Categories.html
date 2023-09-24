@@ -1,9 +1,4 @@
 {%extends 'Base.html'%} {%block title%}Categories{%endblock%} {%block content%}
-<a
-  href="/addcategory"
-  class="add_category_btn btn px-5 py-2 btn-primary position-fixed rounded-5"
-  >+</a
->
 
 <div class="row">
   {%if categories == []%}
@@ -54,5 +49,6 @@
   </div>
   {%endfor%}
 </div>
+<a href="/addcategory" class="btn px-3 py-2 btn-primary">Add Category</a>
 
 {%endblock%}

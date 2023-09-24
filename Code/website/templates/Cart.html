@@ -11,8 +11,8 @@
       <h5>Quantity: {{cart[product.productId | string]}}</h5>
       <h5>Rate: {{product.rate}}{{product.unit}}</h5>
       <h5>
-        Cost: {%if product.unit == "$/kg"%}${%else%}₹{%endif%} {{product.rate *
-        cart[product.productId | string]}}
+        Cost: {%if product.unit == "$/kg"%}${%else%}₹{%endif%} {{product.rate |
+        int * cart[product.productId | string] | int}}
       </h5>
       <a
         href="/api/deleteFromCart?id={{product.productId}}"
